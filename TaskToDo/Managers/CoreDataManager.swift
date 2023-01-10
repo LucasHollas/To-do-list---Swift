@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class CoreDataMa nager {
+class CoreDataManager{
     
     let persistentContainer: NSPersistentContainer
     static let shared: CoreDataManager = CoreDataManager()

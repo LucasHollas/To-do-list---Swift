@@ -14,7 +14,7 @@ struct TaskToDoApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().eviroment(\.managedObjectContext, persistentContainer.viewContext)
+            ContentView().environment(\.managedObjectContext, persistentContainer.viewContext)
         }
     }
 }
