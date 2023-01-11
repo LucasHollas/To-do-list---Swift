@@ -50,6 +50,16 @@ struct ContentView: View {
                         Text(priority.title).tag(priority)
                     }
                 }.pickerStyle(.segmented)
+                
+                Button("Save") {
+                    
+                } .padding(10)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
+                
+                Spacer()
             }
             .padding()
             .navigationTitle("All Tasks")
