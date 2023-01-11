@@ -78,6 +78,19 @@ struct ContentView: View {
         }
     }
     
+    private func deleteTask(at offsets: IndexSet) {
+        offsets.forEach { index in
+            let task = allTasks[index]
+            viewContext.delete(task)
+            do {
+                try viewContext.save()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        
+    }
+    
     var body: some View {
         NavigationView {
             
@@ -116,7 +129,7 @@ struct ContentView: View {
                                     updateTask(task)
                                 }
                         }
-                    }
+                    }.onDelete(perform: deleteTask)
                 }
                 
                 Spacer()
