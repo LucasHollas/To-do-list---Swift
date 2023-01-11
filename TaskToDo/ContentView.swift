@@ -32,8 +32,6 @@ extension Priority {
     }
 }
 
-
-
 struct ContentView: View {
     
     @State private var title: String = ""
@@ -49,6 +47,31 @@ struct ContentView: View {
             task.title = title
             task.priority = selectedPriority.rawValue
             task.dateCreated = Date()
+            try viewContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func styleForPriority(_ value: String) -> Color {
+        let priority = Priority(rawValue: value)
+        
+        switch priority {
+            case .low:
+                return Color.green
+            case .medium:
+                return Color.orange
+            case .high:
+                return Color.red
+            default:
+                return Color.black
+        }
+    }
+    
+    private func updateTask(_ task: Task) {
+        task.isFavorite = !task.isFavorite
+        
+        do {
             try viewContext.save()
         } catch {
             print(error.localizedDescription)
@@ -80,7 +103,19 @@ struct ContentView: View {
                 List {
                     
                     ForEach(allTasks) { task in
-                        Text(task.title ?? "")
+                        HStack {
+                            Circle()
+                                .fill(styleForPriority(task.priority!))
+                                .frame(width:15, height: 15)
+                            Spacer().frame(width: 90)
+                            Text(task.title ?? "")
+                            Spacer()
+                            Image(systemName: task.isFavorite ? "heart.fill": "heart")
+                                .foregroundColor(.red)
+                                .onTapGesture {
+                                    updateTask(task)
+                                }
+                        }
                     }
                 }
                 
@@ -94,6 +129,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        let persistedContainer = CoreDataManager.shared.persistentContainer
+        ContentView().environment(\.managedObjectContext, persistedContainer.viewContext)
     }
 }
